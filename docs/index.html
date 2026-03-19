@@ -9,70 +9,16 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css" />
 
   <style>
-    :root {
-      --theme-color: #5B6CFF;
-      --sidebar-width: 280px;
-    }
-
-    body {
-      background: #f5f7fb;
-    }
-
-    /* Sidebar 樣式優化 */
-    .sidebar {
-      background: #ffffff;
-      border-right: 1px solid #eee;
-    }
-
-    .sidebar .app-name {
-      font-weight: 700;
-      font-size: 20px;
-      color: #5B6CFF;
-    }
-
-    /* 頂部 Logo 裝飾 */
-    .app-name::before {
-      content: "AI Leads to Activation";
-      display: block;
-      font-size: 11px;
-      color: #7B61FF;
-      margin-bottom: 4px;
-      letter-spacing: 1px;
-    }
-
-    /* 內容區塊卡片化：讓它看起來像專業文件 */
-    .markdown-section {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-      min-height: 80vh;
-    }
-
-    /* 標題與表格美化 */
-    h2 {
-      margin-top: 40px;
-      border-left: 5px solid #5B6CFF;
-      padding-left: 12px;
-    }
-
-    table {
-      width: 100%;
-      display: table !important;
-      border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
-      margin: 20px 0;
-    }
-
+    :root { --theme-color: #5B6CFF; --sidebar-width: 280px; }
+    body { background: #f5f7fb; }
+    .sidebar { background: #ffffff; border-right: 1px solid #eee; }
+    .sidebar .app-name { font-weight: 700; font-size: 20px; color: #5B6CFF; }
+    .app-name::before { content: "AI Leads to Activation"; display: block; font-size: 11px; color: #7B61FF; margin-bottom: 4px; letter-spacing: 1px; }
+    .markdown-section { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); min-height: 80vh; }
+    h2 { margin-top: 40px; border-left: 5px solid #5B6CFF; padding-left: 12px; }
+    table { width: 100%; display: table !important; border-collapse: collapse; border-radius: 8px; overflow: hidden; margin: 20px 0; }
     th { background: #f8faff; }
-
-    /* 修復側邊欄子項目的間距 */
-    .sidebar-nav li > ul {
-      padding-left: 20px;
-    }
+    .sidebar-nav li > ul { padding-left: 20px; }
   </style>
 </head>
 
@@ -82,18 +28,25 @@
   <script>
     window.$docsify = {
       name: 'Altatech Docs',
-      loadSidebar: true,    // 載入 _sidebar.md
-      autoHeader: true,
-      subMaxLevel: 3,       // 抓取 md 內 H2, H3 標題顯示在左側
-      homepage: 'README.md', 
-      relativePath: true, // 強制開啟相對路徑模式
+      
+      // 1. 強制指定側邊欄檔案，不讓它自己猜
+      loadSidebar: '_sidebar.md', 
+      
+      // 2. 關閉相對路徑模式，因為它在 GitHub 子目錄下容易出錯
+      relativePath: false, 
 
-      // 側邊欄摺疊插件配置
+      // 3. 重要：如果你的網址有 /altatech/docs/，請補上這行
+      // 如果你之後把 GitHub Pages 設定改成從 /docs 資料夾發佈，這行要改成 '/'
+      basePath: '/altatech/docs/', 
+
+      autoHeader: true,
+      subMaxLevel: 3,
+      homepage: 'README.md',
+
       sidebarCollapse: {
-        sidebarDisplayLevel: 2, // 預設展開到第二層 (Android/iOS 這一層)
+        sidebarDisplayLevel: 2,
       },
 
-      // 搜尋功能
       search: {
         maxAge: 86400000,
         paths: 'auto',
@@ -102,7 +55,6 @@
         depth: 4
       },
 
-      // 分頁按鈕
       pagination: {
         previousText: '上一章節',
         nextText: '下一章節',
@@ -112,9 +64,7 @@
   </script>
 
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-  
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>

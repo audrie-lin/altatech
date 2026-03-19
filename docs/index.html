@@ -82,20 +82,26 @@
 
   <script>
   window.$docsify = {
-    name: 'Altatech',
-    loadSidebar: true,
-    subMaxLevel: 2,
-
-    themeColor: '#5B6CFF',
-
-    search: 'auto',
-
+    name: 'Altatech Docs',
+    repo: '',
+    loadSidebar: true, // 開啟側邊欄
+    alias: {
+      '/.*/_sidebar.md': '/_sidebar.md' // 防止子目錄找不到側邊欄
+    },
+    subMaxLevel: 3,   // 重要！讓側邊欄顯示到 H3 標題，這樣就有你說的「跳轉欄位」
+    sidebarDisplayLevel: 1, // 設定預設展開層級
+    
+    // --- 解決點選後自動縮起的問題 ---
+    // 如果你有裝 sidebar-collapse 插件，確保以下設定：
     pagination: {
-      previousText: '上一頁',
-      nextText: '下一頁',
-    }
+      previousText: '上一章節',
+      nextText: '下一章節',
+    },
   }
-  </script>
+</script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css" />
+<script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
 
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>

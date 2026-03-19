@@ -1,162 +1,120 @@
 openapi: 3.0.3
 info:
-  title: Altatech Android SDK 整合指南
-  version: 1.0.3
+  title: Android SDK integration - BytePlus Data Intelligence
+  version: 6.17.1
   description: |
-    # Android SDK 整合文件
-    本文件詳細說明了如何在 Android 應用中整合數據採集 SDK。
+    # Document guide
+    The following diagram provides an overview of the organization of SDK integration-related documents.
+    ![Guide Diagram](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7e9a02f48a324006988ee048838c816b~tplv-goo7wpa0wc-image.image)
+
+    # Event tracking planning
+    Before integrating the SDK, you need to plan event tracking based on your business analysis.
+
+    ## Basic concepts
+    | Basic concepts | Concept explanation | Key points for event planning and SDK integration | Detailed guidance document |
+    | :--- | :--- | :--- | :--- |
+    | **Events, event attributes, common event attributes, user attributes** | User behavior data analysis in BytePlus Analyze is based on an event + user model analysis framework. | You need to plan which events, event attributes, and user attributes to collect and their types according to your business analysis needs during SDK integration. | [Data Model](/docs/data-intelligence/docs-data-model) |
+    | **Tracking points, full tracking points, custom tracking points** | Tracking point: The process of embedding event logic into the code through SDK development is called tracking point. | It is usually recommended to plan tracking points by combining the preset events/properties provided by BytePlus Analyze with custom tracking points. | [Tracking, comprehensive tracking](/docs/data-intelligence/Tracking) |
+
+    ## Understand data reporting requirements
+    Data reported by the SDK usually follows a fixed format, mainly consisting of two parts: **header** and **event**.
+
+    ### Header Example (JSON)
+    ```json
+    {
+      "magic_tag": "ss_app_log",
+      "header": {
+        "platform": "Android",
+        "sdk_lib": "Android",
+        "device_model": "M2012K11AC",
+        "device_brand": "Redmi",
+        "os_version": "13",
+        "sdk_version_name": "6.17.1",
+        "channel": "test",
+        "user_unique_id": "test_unique_id"
+      }
+    }
+    ```
+
+    # Integrate SDK
     
-    ## 1. 整合流程圖
-    您可以參考以下流程完成整合：
-    * **規劃階段**: 確定埋點事件與用戶識別邏輯。
-    * **準備階段**: 獲取 `APPID` 與數據上報地址。
-    * **開發階段**: 導入依賴、初始化 SDK、設置用戶 ID、上報事件。
-    * **驗證階段**: 使用 DevTools 或後台日誌驗證數據。
+    ## Step 1: Add SDK dependencies
+    
+    ### For Gradle below 7.0 (build.gradle)
+    ```gradle
+    allprojects {
+        repositories {
+            maven { url '[https://artifact.bytedance.com/repository/Volcengine/](https://artifact.bytedance.com/repository/Volcengine/)' }
+        }
+    }
+    ```
 
-    ## 2. 核心概念
-    * **Event (事件)**: 用戶的具體行為（如點擊、購買）。
-    * **User Attribute (用戶屬性)**: 描述用戶特徵（如年齡、VIP 等級）。
-    * **SSID**: 系統自動生成的唯一計算標識，用於追蹤匿名與登入用戶。
+    ### For Gradle 7.0 and above (settings.gradle)
+    ```gradle
+    dependencyResolutionManagement {
+        repositories {
+            maven { url = uri("[https://artifact.bytedance.com/repository/Volcengine/](https://artifact.bytedance.com/repository/Volcengine/)") }
+        }
+    }
+    ```
 
-    ## 3. SDK 初始化範例 (Kotlin/Java)
-    ```java
+    ### Add Dependency (app-level build.gradle)
+    ```gradle
+    implementation 'com.bytedance.applog:RangersAppLog-All-global:6.17.1'
+    ```
+
+    ## Step 2: Initialize SDK
+    ```javascript
     final InitConfig config = new InitConfig("yourAPPID", "yourCHANNEL");
-    config.setUriConfig(UriConfig.createByDomain("[https://your.report.com](https://your.report.com)", null));
-    config.setAutoStart(false); // 隱私合規：由用戶同意後啟動
-    config.setAutoTrackEnabled(true); // 開啟全埋點
+    config.setUriConfig(UriConfig.createByDomain("https://****.****.com", null));
+    config.setAutoStart(false);
+    config.setAutoTrackEnabled(true);
+    config.setLogEnable(false);
+    AppLog.setEncryptAndCompress(true);
     AppLog.init(this, config);
-    AppLog.start(); // 開始上報
+    AppLog.start();
     ```
 
 tags:
-  - name: Preparation
-    description: 整合前的準備工作 (APPID, Domain)
-  - name: SDK Integration
-    description: SDK 依賴導入與初始化
-  - name: Data Reporting
-    description: 自定義事件與用戶屬性上報 API
-  - name: Preset Properties
-    description: SDK 自動採集的欄位清單
+  - name: Android SDK API List
+    description: 完整 API 接口清單
 
 paths:
-  /sdk/preparation:
-    get:
-      tags: [Preparation]
-      summary: 獲取 APPID 與上報地址
-      responses:
-        '200':
-          description: |
-            * **APPID**: 在 [Group Settings > Project List] 中獲取。
-            * **Reporting Domain**: 預設新加坡環境不需要額外配置，需使用 `-global` 版本包。
-
-  /sdk/dependency:
-    get:
-      tags: [SDK Integration]
-      summary: 導入 SDK 依賴 (Gradle)
-      responses:
-        '200':
-          description: |
-            在 `build.gradle` 中加入：
-            ```gradle
-            implementation 'com.bytedance.applog:RangersAppLog-All-global:6.17.1'
-            ```
-
   /api/onEventV3:
     post:
-      tags: [Data Reporting]
-      summary: AppLog.onEventV3 (自定義行為事件)
-      description: 用於上報用戶點擊、購買等行為。
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventV3'
+      tags: [Android SDK API List]
+      summary: Report custom events (onEventV3)
+      description: |
+        According to the tracking plan, if you need to collect and report custom events, you can call the `AppLog.onEventV3` method.
+        
+        **Example:**
+        ```java
+        JSONObject paramsObj = new JSONObject();
+        paramsObj.put("key_string", "value_string");
+        paramsObj.put("key_int", 10);
+        AppLog.onEventV3("event", paramsObj);
+        ```
       responses:
         '200':
-          description: Success
+          description: OK
 
   /api/setUserUniqueID:
     post:
-      tags: [Data Reporting]
-      summary: AppLog.setUserUniqueID (設置登入用戶 ID)
-      description: 當用戶登入後，呼叫此方法綁定業務系統的 UID。
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_unique_id:
-                  type: string
-                  example: "user_login_12345"
+      tags: [Android SDK API List]
+      summary: Set custom user (setUserUniqueID)
+      description: |
+        Set the `user_unique_id` property when user real-name login is required.
+        
+        **Example:**
+        ```java
+        AppLog.setUserUniqueID("your_USER_UNIQUE_ID");
+        ```
       responses:
         '200':
-          description: Success
+          description: OK
 
 components:
   schemas:
-    # 數據報文 Header 結構
-    DataHeader:
+    FullDataModel:
       type: object
-      title: Data Header (公共屬性)
-      properties:
-        app_id:
-          type: string
-          description: "應用的唯一標識"
-        device_model:
-          type: string
-          description: "手機型號"
-          example: "M2012K11AC"
-        os:
-          type: string
-          example: "Android"
-        os_version:
-          type: string
-          example: "13"
-        sdk_version:
-          type: string
-          example: "6.17.1"
-
-    # 自定義事件結構
-    EventV3:
-      type: object
-      title: Event V3 Structure
-      required:
-        - event
-      properties:
-        event:
-          type: string
-          description: "事件名稱"
-          example: "video_play"
-        params:
-          type: object
-          description: "事件屬性鍵值對"
-          properties:
-            video_id:
-              type: string
-              example: "v_001"
-            is_auto_play:
-              type: boolean
-              example: true
-
-    # Android 預置屬性清單
-    AndroidPresets:
-      type: object
-      title: Android 預置屬性清單
-      properties:
-        device_brand:
-          type: string
-          description: "設備品牌"
-          example: "Xiaomi"
-        resolution:
-          type: string
-          description: "解析度"
-          example: "2400x1080"
-        language:
-          type: string
-          description: "系統語言"
-          example: "zh"
-        carrier:
-          type: string
-          description: "運營商"
-          example: "中國移動"
+      description: "完整數據結構參考，詳見說明文件內容。"

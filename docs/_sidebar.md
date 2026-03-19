@@ -1,5 +1,9 @@
-# 文件目錄
+# 🚀 Altatech
 
-- [文件首頁](/)
-- [Android SDK](/android)
-- [iOS SDK](/ios)
+- 📘 文件指南
+  - [總覽](/)
+  - [Android SDK](/android)
+  - [iOS SDK](/ios)
+
+- 🔧 API 文件
+  - [Android API](/../api/android.html)

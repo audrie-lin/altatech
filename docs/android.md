@@ -1,7 +1,7 @@
 # Android SDK 整合指南
 
 ## 文件結構
-![圖]([SDK integration-related documents](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7e9a02f48a324006988ee048838c816b~tplv-goo7wpa0wc-image.image))
+[![SDK integration-related documents](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7e9a02f48a324006988ee048838c816b~tplv-goo7wpa0wc-image.image)](https://p9-arcosite.byteimg.com/tos-cn-i-goo7wpa0wc/7e9a02f48a324006988ee048838c816b~tplv-goo7wpa0wc-image.image)
 
 ---
 

@@ -1,8 +1,24 @@
-# Altatech 文件指南
+# 🚀 Altatech 文件中心
 
-這裡是 Altatech 的完整文件。
+> AI Leads to Activation
 
-## 內容包含
-- SDK 整合
-- 事件追蹤
-- CDP / AMP 應用
+---
+
+## 📘 文件導覽
+
+- [Android SDK](/android)
+- [iOS SDK](/ios)
+
+---
+
+## 🔧 API
+
+- [Android API](/../api/android.html)
+
+---
+
+## ✨ 核心能力
+
+- CDP（客戶資料平台）
+- AMP（行銷自動化）
+- DMP 

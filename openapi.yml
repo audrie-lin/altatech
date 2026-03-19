@@ -11,13 +11,14 @@ info:
     Before integrating the SDK, you need to plan event tracking based on your business analysis.
 
     ## Basic concepts
-    | Basic concepts | Concept explanation | Key points for event planning and SDK integration | Detailed guidance document |
-    | :--- | :--- | :--- | :--- |
-    | **Events, event attributes, common event attributes, user attributes** | User behavior data analysis in BytePlus Analyze is based on an event + user model analysis framework. | You need to plan which events, event attributes, and user attributes to collect and their types according to your business analysis needs during SDK integration. | [Data Model](/docs/data-intelligence/docs-data-model) |
-    | **Tracking points, full tracking points, custom tracking points** | Tracking point: The process of embedding event logic into the code through SDK development is called tracking point. | It is usually recommended to plan tracking points by combining the preset events/properties provided by BytePlus Analyze with custom tracking points. | [Tracking, comprehensive tracking](/docs/data-intelligence/Tracking) |
+    | Basic concepts | Concept explanation | Key points for integration |
+    | :--- | :--- | :--- |
+    | **Events & Attributes** | User behavior analysis is based on an event + user model. | Plan which events and user attributes to collect. |
+    | **Tracking points** | Embedding event logic into code via SDK. | Combine preset events with custom tracking points. |
+    | **Full tracking** | Automatic collection of clicks and page views (bav2b_click/page). | No development needed but collects large amounts of data. |
 
     ## Understand data reporting requirements
-    Data reported by the SDK usually follows a fixed format, mainly consisting of two parts: **header** and **event**.
+    Data reported mainly consists of two parts: **header** and **event**.
 
     ### Header Example (JSON)
     ```json
@@ -25,89 +26,85 @@ info:
       "magic_tag": "ss_app_log",
       "header": {
         "platform": "Android",
-        "sdk_lib": "Android",
         "device_model": "M2012K11AC",
-        "device_brand": "Redmi",
         "os_version": "13",
         "sdk_version_name": "6.17.1",
         "channel": "test",
-        "user_unique_id": "test_unique_id"
+        "aid": 123456,
+        "user_unique_id": "test_unique_id",
+        "package": "com.bytedance.test"
       }
     }
     ```
 
-    # Integrate SDK
-    
-    ## Step 1: Add SDK dependencies
-    
-    ### For Gradle below 7.0 (build.gradle)
-    ```gradle
-    allprojects {
-        repositories {
-            maven { url '[https://artifact.bytedance.com/repository/Volcengine/](https://artifact.bytedance.com/repository/Volcengine/)' }
-        }
-    }
-    ```
+    ## Understand user identification logic
+    * **device_id**: Unique device ID, used when real user ID is unavailable.
+    * **user_unique_id**: Identifies logged-in users (e.g., account ID).
+    * **SSID**: BytePlus's default calculation criteria ID, maps device_id and user_unique_id.
 
-    ### For Gradle 7.0 and above (settings.gradle)
+    # Preparation work
+    1. **Step 1**: Create tracking point requirements in the management page.
+    2. **Step 2**: Obtain **APPID** (Found in Group Settings > Project List).
+    3. **Step 3**: Obtain **Reporting Address** (SG environment defaults to Singapore).
+
+    # Integrate SDK
+    ## Step 1: Add SDK dependencies
     ```gradle
+    // Gradle 7.0+ (settings.gradle)
     dependencyResolutionManagement {
         repositories {
             maven { url = uri("[https://artifact.bytedance.com/repository/Volcengine/](https://artifact.bytedance.com/repository/Volcengine/)") }
         }
     }
-    ```
-
-    ### Add Dependency (app-level build.gradle)
-    ```gradle
+    // app/build.gradle
     implementation 'com.bytedance.applog:RangersAppLog-All-global:6.17.1'
     ```
 
     ## Step 2: Initialize SDK
-    ```javascript
+    ```java
     final InitConfig config = new InitConfig("yourAPPID", "yourCHANNEL");
-    config.setUriConfig(UriConfig.createByDomain("https://****.****.com", null));
+    config.setUriConfig(UriConfig.createByDomain("[https://your-domain.com](https://your-domain.com)", null));
     config.setAutoStart(false);
     config.setAutoTrackEnabled(true);
-    config.setLogEnable(false);
-    AppLog.setEncryptAndCompress(true);
     AppLog.init(this, config);
     AppLog.start();
     ```
 
+    # Android SDK API list
+    | Category | API | Description |
+    | :--- | :--- | :--- |
+    | **Main** | `init` / `start` | Initialize and start the SDK. |
+    | **Tracking** | `onEventV3` | Report custom behavior events. |
+    | **User** | `setUserUniqueID` | Set the logged-in user ID. |
+    | **Profile** | `profileSet` | Set user properties (age, gender, etc). |
+
 tags:
-  - name: Android SDK API List
-    description: 完整 API 接口清單
+  - name: SDK Methods
+    description: 常用程式碼接口參考
 
 paths:
-  /api/onEventV3:
+  /sdk/onEventV3:
     post:
-      tags: [Android SDK API List]
-      summary: Report custom events (onEventV3)
+      tags: [SDK Methods]
+      summary: AppLog.onEventV3
       description: |
-        According to the tracking plan, if you need to collect and report custom events, you can call the `AppLog.onEventV3` method.
-        
-        **Example:**
+        Report custom events with attributes.
         ```java
-        JSONObject paramsObj = new JSONObject();
-        paramsObj.put("key_string", "value_string");
-        paramsObj.put("key_int", 10);
-        AppLog.onEventV3("event", paramsObj);
+        JSONObject params = new JSONObject();
+        params.put("key", "value");
+        AppLog.onEventV3("event_name", params);
         ```
       responses:
         '200':
           description: OK
-
-  /api/setUserUniqueID:
+  /sdk/setUserUniqueID:
     post:
-      tags: [Android SDK API List]
-      summary: Set custom user (setUserUniqueID)
+      tags: [SDK Methods]
+      summary: AppLog.setUserUniqueID
       description: |
-        Set the `user_unique_id` property when user real-name login is required.
-        
-        **Example:**
+        Set user identifier after login.
         ```java
-        AppLog.setUserUniqueID("your_USER_UNIQUE_ID");
+        AppLog.setUserUniqueID("user_id_123");
         ```
       responses:
         '200':
@@ -115,6 +112,6 @@ paths:
 
 components:
   schemas:
-    FullDataModel:
+    AndroidDataModel:
       type: object
-      description: "完整數據結構參考，詳見說明文件內容。"
+      description: "這是一個虛擬模型，具體屬性請參閱上方說明。"

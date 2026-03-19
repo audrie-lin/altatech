@@ -1,57 +1,105 @@
 openapi: 3.0.3
 info:
-  title: Altatech Data Intelligence Model
-  version: 1.0.0
+  title: Altatech Android SDK 數據規範
   description: |
-    本文件定義了 Altatech 的數據模型規範。
+    本文件定義了 Android 端的 SDK 集成規範與數據上報格式。
     
-    ## 核心概念
-    * **User ID**: 使用者的唯一識別碼
-    * **Event**: 使用者觸發的行為
-tags:
-  - name: User Profile
-    description: 使用者屬性相關定義
-  - name: Event Tracking
-    description: 行為事件屬性定義
+    ## 集成步驟簡述
+    1. **添加依賴**: 引入 `RangersAppLog-All-global`。
+    2. **初始化 SDK**: 配置 `AppID` 與數據上報地址。
+    3. **自定義事件**: 使用 `onEventV3` 接口。
+  version: 1.0.2
 
-paths: {} # 因為這不是 API 呼叫，只是資料模型，所以 paths 可以留空
+tags:
+  - name: SDK Configuration
+    description: SDK 初始化與全局配置參數
+  - name: Preset Properties
+    description: SDK 自動採集的預置屬性 (Device/App 資訊)
+  - name: Custom Events
+    description: 自定義行為事件上報格式
+
+paths: {}
 
 components:
   schemas:
-    # 這裡開始定義你的資料模型
-    UserAttributes:
+    # --- 1. SDK 初始化配置 ---
+    SDKInitConfig:
       type: object
-      title: 使用者屬性 (User Attributes)
-      description: 描述使用者的靜態特徵。
+      title: SDK 初始化參數 (InitConfig)
+      required:
+        - app_id
+        - channel
       properties:
-        user_unique_id:
+        app_id:
           type: string
-          description: "必填。使用者的唯一識別碼。"
-          example: "AU12345"
-        device_id:
+          description: "從控制台獲取的唯一 AppID"
+          example: "123456"
+        channel:
           type: string
-          description: "設備唯一識別碼。"
-          example: "F8392-D921-002"
-        first_login_date:
-          type: string
-          format: date
-          description: "首次登入日期。"
-        is_vip:
+          description: "發布管道 (如 GooglePlay, Xiaomi)"
+          example: "GooglePlay"
+        auto_track_enabled:
           type: boolean
-          description: "是否為付費會員。"
-          
-    EventProperties:
+          description: "是否開啟全埋點 (自動採集點擊、頁面瀏覽)"
+          default: true
+        log_enable:
+          type: boolean
+          description: "是否開啟調試日誌 (建議開發環境開啟，生產環境關閉)"
+          default: false
+
+    # --- 2. SDK 預置屬性 (自動採集) ---
+    AndroidPresetProperties:
       type: object
-      title: 事件屬性 (Event Properties)
-      description: 埋點事件中所帶的參數。
+      title: Android 預置屬性
+      description: |
+        SDK 會在每次事件上報時自動帶上這些設備相關屬性，不需手動開發。
+      properties:
+        device_model:
+          type: string
+          description: "設備型號"
+          example: "Pixel 7 Pro"
+        os_version:
+          type: string
+          description: "操作系統版本"
+          example: "Android 13"
+        app_version:
+          type: string
+          description: "App 的版本號"
+          example: "1.0.5"
+        resolution:
+          type: string
+          description: "螢幕解析度"
+          example: "1440x3120"
+        language:
+          type: string
+          description: "系統語言"
+          example: "zh-Hant"
+
+    # --- 3. 自定義事件範例 (onEventV3) ---
+    CustomEventV3:
+      type: object
+      title: 自定義事件上報格式
+      description: |
+        呼叫 `AppLog.onEventV3(eventName, params)` 時傳入的結構。
+      required:
+        - event_name
       properties:
         event_name:
           type: string
-          description: "事件名稱，如 `click_button`。"
-        page_path:
-          type: string
-          description: "觸發事件的頁面路徑。"
-          example: "/home/dashboard"
-        stay_duration:
-          type: integer
-          description: "停留時長 (秒)。"
+          description: "事件識別名稱"
+          example: "video_play_click"
+        params:
+          type: object
+          description: "事件伴隨的自定義參數"
+          properties:
+            video_id:
+              type: string
+              example: "vid_9982"
+            play_source:
+              type: string
+              description: "播放來源 (首頁、推薦、收藏)"
+              example: "recommend"
+            is_auto_play:
+              type: boolean
+              description: "是否為自動播放"
+              example: false

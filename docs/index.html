@@ -3,7 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Altatech Docs</title>
+
+  <!-- ✅ 這裡放主題（最重要） -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css">
+
+  <!-- ✅ 自訂樣式（讓它更好看） -->
+  <style>
+    :root {
+      --theme-color: #5B6CFF;
+    }
+
+    .sidebar {
+      background-color: #f8f9fc;
+    }
+
+    .markdown-section {
+      max-width: 900px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    h1, h2, h3 {
+      font-weight: 600;
+    }
+  </style>
 </head>
+
 <body>
   <div id="app"></div>
 
@@ -23,7 +50,14 @@
   }
   </script>
 
+  <!-- ✅ Docsify 核心 -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+
+  <!-- ✅ 搜尋功能（你剛剛少這個） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+  <!-- ✅ 分頁功能 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
 </body>
 </html>

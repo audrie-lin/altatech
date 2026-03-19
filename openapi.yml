@@ -1,46 +1,57 @@
 openapi: 3.0.3
 info:
-  title: Data Intelligence Data Model
-  description: |
-    這是參考 BytePlus 官方文件的資料模型定義。
-    包含使用者屬性、事件屬性等規範。
+  title: Altatech Data Intelligence Model
   version: 1.0.0
-servers:
-  - url: https://api.yourdomain.com/v1
+  description: |
+    本文件定義了 Altatech 的數據模型規範。
+    
+    ## 核心概念
+    * **User ID**: 使用者的唯一識別碼
+    * **Event**: 使用者觸發的行為
 tags:
-  - name: Data Model
-    description: 核心資料模型定義
-paths: {}
+  - name: User Profile
+    description: 使用者屬性相關定義
+  - name: Event Tracking
+    description: 行為事件屬性定義
+
+paths: {} # 因為這不是 API 呼叫，只是資料模型，所以 paths 可以留空
+
 components:
   schemas:
+    # 這裡開始定義你的資料模型
     UserAttributes:
       type: object
-      title: User Attributes (使用者屬性)
-      description: 用於描述使用者的靜態特徵。
+      title: 使用者屬性 (User Attributes)
+      description: 描述使用者的靜態特徵。
       properties:
         user_unique_id:
           type: string
-          description: 使用者的唯一識別碼，不可為空。
-          example: "user_12345"
-        first_login_time:
-          type: integer
-          format: int64
-          description: 使用者首次登入的時間戳 (毫秒)。
-          example: 1672531200000
-        gender:
+          description: "必填。使用者的唯一識別碼。"
+          example: "AU12345"
+        device_id:
           type: string
-          enum: [male, female, unknown]
-          description: 性別
+          description: "設備唯一識別碼。"
+          example: "F8392-D921-002"
+        first_login_date:
+          type: string
+          format: date
+          description: "首次登入日期。"
+        is_vip:
+          type: boolean
+          description: "是否為付費會員。"
+          
     EventProperties:
       type: object
-      title: Event Properties (事件屬性)
-      description: 埋點事件中所帶的詳細參數。
+      title: 事件屬性 (Event Properties)
+      description: 埋點事件中所帶的參數。
       properties:
         event_name:
           type: string
-          description: 事件名稱
-          example: "purchase_click"
-        device_model:
+          description: "事件名稱，如 `click_button`。"
+        page_path:
           type: string
-          description: 設備型號
-          example: "iPhone 14 Pro"
+          description: "觸發事件的頁面路徑。"
+          example: "/home/dashboard"
+        stay_duration:
+          type: integer
+          description: "停留時長 (秒)。"

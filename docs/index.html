@@ -9,16 +9,93 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css" />
 
   <style>
-    :root { --theme-color: #5B6CFF; --sidebar-width: 280px; }
-    body { background: #f5f7fb; }
-    .sidebar { background: #ffffff; border-right: 1px solid #eee; }
-    .sidebar .app-name { font-weight: 700; font-size: 20px; color: #5B6CFF; }
-    .app-name::before { content: "AI Leads to Activation"; display: block; font-size: 11px; color: #7B61FF; margin-bottom: 4px; letter-spacing: 1px; }
-    .markdown-section { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); min-height: 80vh; }
-    h2 { margin-top: 40px; border-left: 5px solid #5B6CFF; padding-left: 12px; }
-    table { width: 100%; display: table !important; border-collapse: collapse; border-radius: 8px; overflow: hidden; margin: 20px 0; }
-    th { background: #f8faff; }
-    .sidebar-nav li > ul { padding-left: 20px; }
+    :root {
+      /* 核心配色：使用更專業的深藍與科技藍 */
+      --theme-color: #5B6CFF;
+      --base-font-size: 16px;
+      --sidebar-width: 300px;
+      
+      /* Docsify Themeable 變數優化 */
+      --sidebar-background: #ffffff;
+      --sidebar-nav-link-color: #455a64;
+      --sidebar-nav-link-color--active: #5B6CFF;
+      --sidebar-nav-link-font-weight--active: 600;
+    }
+
+    /* 整體背景優化 */
+    body {
+      background-color: #f8faff !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* 側邊欄：增加陰影與層次 */
+    .sidebar {
+      border-right: 1px solid rgba(0,0,0,0.05) !important;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+    }
+
+    /* 讓 Logo 區塊更漂亮 */
+    .sidebar .app-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      padding: 20px 0;
+      text-align: left;
+      margin-left: 20px;
+    }
+
+    /* 內容區塊卡片化：這是美感的關鍵 */
+    .markdown-section {
+      max-width: 850px !important;
+      margin: 30px auto 60px !important;
+      background: white;
+      padding: 50px 60px !important;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      line-height: 1.7;
+    }
+
+    /* 標題與裝飾 */
+    h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 1.5rem; }
+    h2 { 
+      font-size: 1.8rem; 
+      margin-top: 2.5rem; 
+      padding-bottom: 0.5rem; 
+      border-bottom: 2px solid #f0f2f5; 
+    }
+    h3 { margin-top: 2rem; color: #37474f; }
+
+    /* 表格美化：變得很專業 */
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      margin: 1.5rem 0;
+      border: 1px solid #eef2f6;
+      border-radius: 8px;
+    }
+    th {
+      background: #f8faff;
+      color: #546e7a;
+      font-weight: 600;
+      padding: 12px 15px;
+      border-bottom: 1px solid #eef2f6;
+    }
+    td { padding: 12px 15px; border-bottom: 1px solid #f4f7f9; }
+
+    /* 代碼塊圓角 */
+    pre {
+      background: #282c34 !important;
+      border-radius: 8px !important;
+      padding: 1.2rem !important;
+    }
+    
+    /* 側邊欄跳轉小標題的樣式（H2, H3） */
+    .sidebar-nav li > ul {
+      font-size: 0.9rem;
+      border-left: 1px solid #eee;
+      margin-left: 15px;
+      padding-left: 5px;
+    }
   </style>
 </head>
 
@@ -39,7 +116,10 @@
       sidebarCollapse: {
         sidebarDisplayLevel: 2,
       },
+      // 圖片縮放
+      zoomImage: true,
 
+      // 搜尋功能優化
       search: {
         maxAge: 86400000,
         paths: 'auto',

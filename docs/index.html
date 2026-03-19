@@ -86,10 +86,12 @@
   repo: '',
   loadSidebar: true, // 載入 _sidebar.md
   subMaxLevel: 3,    // 自動抓取 .md 檔內的 H2, H3 標題顯示在側邊欄
-  
+  alias: {
+    '/.*/_sidebar.md': '/_sidebar.md'
+  },
   // --- 側邊欄摺疊設定 ---
   sidebarCollapse: {
-    sidebarDisplayLevel: 1, // 預設展開第一層
+    sidebarDisplayLevel: 2, // 預設展開到第 2 層，這樣你的 Android/iOS 分類就不會縮起來
   },
 
   // --- 搜尋插件設定 ---

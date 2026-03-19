@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Data Intelligence Data Model
+  description: |
+    這是參考 BytePlus 官方文件的資料模型定義。
+    包含使用者屬性、事件屬性等規範。
+  version: 1.0.0
+servers:
+  - url: https://api.yourdomain.com/v1
+tags:
+  - name: Data Model
+    description: 核心資料模型定義
+paths: {}
+components:
+  schemas:
+    UserAttributes:
+      type: object
+      title: User Attributes (使用者屬性)
+      description: 用於描述使用者的靜態特徵。
+      properties:
+        user_unique_id:
+          type: string
+          description: 使用者的唯一識別碼，不可為空。
+          example: "user_12345"
+        first_login_time:
+          type: integer
+          format: int64
+          description: 使用者首次登入的時間戳 (毫秒)。
+          example: 1672531200000
+        gender:
+          type: string
+          enum: [male, female, unknown]
+          description: 性別
+    EventProperties:
+      type: object
+      title: Event Properties (事件屬性)
+      description: 埋點事件中所帶的詳細參數。
+      properties:
+        event_name:
+          type: string
+          description: 事件名稱
+          example: "purchase_click"
+        device_model:
+          type: string
+          description: 設備型號
+          example: "iPhone 14 Pro"

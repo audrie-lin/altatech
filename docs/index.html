@@ -4,30 +4,76 @@
   <meta charset="UTF-8">
   <title>Altatech Docs</title>
 
-  <!-- ✅ 這裡放主題（最重要） -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple-dark.css">
+  <!-- 主題 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
 
-  <!-- ✅ 自訂樣式（讓它更好看） -->
   <style>
     :root {
       --theme-color: #5B6CFF;
     }
 
-    .sidebar {
-      background-color: #f8f9fc;
+    body {
+      background: #f5f7fb;
     }
 
+    /* Sidebar */
+    .sidebar {
+      background: #ffffff;
+      border-right: 1px solid #eee;
+    }
+
+    .sidebar .app-name {
+      font-weight: 700;
+      font-size: 20px;
+      color: #5B6CFF;
+    }
+
+    /* Header（自製） */
+    .app-name::before {
+      content: "AI Leads to Activation";
+      display: block;
+      font-size: 12px;
+      color: #7B61FF;
+      margin-bottom: 4px;
+    }
+
+    /* 內容卡片 */
     .markdown-section {
       max-width: 900px;
       background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
     }
 
-    h1, h2, h3 {
-      font-weight: 600;
+    /* 標題 */
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
     }
+
+    h2 {
+      margin-top: 40px;
+      border-left: 4px solid #5B6CFF;
+      padding-left: 10px;
+    }
+
+    /* 表格 */
+    table {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    /* code block */
+    pre {
+      border-radius: 10px !important;
+    }
+
+    /* links */
+    a {
+      color: #5B6CFF;
+    }
+
   </style>
 </head>
 
@@ -36,8 +82,9 @@
 
   <script>
   window.$docsify = {
-    name: 'Altatech Docs',
+    name: 'Altatech',
     loadSidebar: true,
+    subMaxLevel: 2,
 
     themeColor: '#5B6CFF',
 
@@ -50,13 +97,8 @@
   }
   </script>
 
-  <!-- ✅ Docsify 核心 -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-
-  <!-- ✅ 搜尋功能（你剛剛少這個） -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-
-  <!-- ✅ 分頁功能 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
 
 </body>

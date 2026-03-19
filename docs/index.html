@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <title>Altatech Docs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-  <!-- 主題 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css" />
 
   <style>
     :root {
       --theme-color: #5B6CFF;
+      --sidebar-width: 280px;
     }
 
     body {
       background: #f5f7fb;
     }
 
-    /* Sidebar */
+    /* Sidebar 樣式優化 */
     .sidebar {
       background: #ffffff;
       border-right: 1px solid #eee;
@@ -28,97 +30,101 @@
       color: #5B6CFF;
     }
 
-    /* Header（自製） */
+    /* 頂部 Logo 裝飾 */
     .app-name::before {
       content: "AI Leads to Activation";
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       color: #7B61FF;
       margin-bottom: 4px;
+      letter-spacing: 1px;
     }
 
-    /* 內容卡片 */
+    /* 內容區塊卡片化：讓它看起來像專業文件 */
     .markdown-section {
       max-width: 900px;
+      margin: 0 auto;
       background: white;
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+      min-height: 80vh;
     }
 
-    /* 標題 */
-    h1 {
-      font-size: 32px;
-      font-weight: 700;
-    }
-
+    /* 標題與表格美化 */
     h2 {
       margin-top: 40px;
-      border-left: 4px solid #5B6CFF;
-      padding-left: 10px;
+      border-left: 5px solid #5B6CFF;
+      padding-left: 12px;
     }
 
-    /* 表格 */
     table {
-      border-radius: 10px;
+      width: 100%;
+      display: table !important;
+      border-collapse: collapse;
+      border-radius: 8px;
       overflow: hidden;
+      margin: 20px 0;
     }
 
-    /* code block */
-    pre {
-      border-radius: 10px !important;
-    }
+    th { background: #f8faff; }
 
-    /* links */
-    a {
-      color: #5B6CFF;
+    /* 修復側邊欄子項目的間距 */
+    .sidebar-nav li > ul {
+      padding-left: 20px;
     }
-
   </style>
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">載入中...</div>
 
   <script>
-  window.$docsify = {
-  name: 'Altatech Docs',
-  repo: '',
-  loadSidebar: true, // 載入 _sidebar.md
-  subMaxLevel: 3,    // 自動抓取 .md 檔內的 H2, H3 標題顯示在側邊欄
-  alias: {
-    '/.*/_sidebar.md': '/_sidebar.md'
-  },
-  // --- 側邊欄摺疊設定 ---
-  sidebarCollapse: {
-    sidebarDisplayLevel: 2, // 預設展開到第 2 層，這樣你的 Android/iOS 分類就不會縮起來
-  },
+    window.$docsify = {
+      name: 'Altatech Docs',
+      loadSidebar: true,    // 載入 _sidebar.md
+      autoHeader: true,
+      subMaxLevel: 3,       // 抓取 md 內 H2, H3 標題顯示在左側
+      
+      // 路由設定
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
 
-  // --- 搜尋插件設定 ---
-  search: {
-    maxAge: 86400000,
-    paths: 'auto',
-    placeholder: '搜尋文件...',
-    noData: '找不到結果',
-    depth: 6
-  },
+      // 側邊欄摺疊插件配置
+      sidebarCollapse: {
+        sidebarDisplayLevel: 2, // 預設展開到第二層 (Android/iOS 這一層)
+      },
 
-  // --- 分頁插件 ---
-  pagination: {
-    previousText: '上一章節',
-    nextText: '下一章節',
-    crossChapter: true,
-    crossChapterText: true,
-  },
-}
-</script>
+      // 搜尋功能
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: '搜尋文件...',
+        noData: '找不到結果',
+        depth: 4
+      },
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css" />
-<script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+      // 分頁按鈕
+      pagination: {
+        previousText: '上一章節',
+        nextText: '下一章節',
+        crossChapter: true,
+      }
+    }
+  </script>
 
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
 
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-gradle.min.js"></script>
 </body>
 </html>

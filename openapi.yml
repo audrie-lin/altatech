@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: Altatech Android SDK 數據規範
+  version: 1.0.2
   description: |
     本文件定義了 Android 端的 SDK 集成規範與數據上報格式。
     
-    ## 集成步驟簡述
-    1. **添加依賴**: 引入 `RangersAppLog-All-global`。
+    ### 快速集成三步驟
+    1. **添加依賴**: 引入 `com.bytedance.applog:RangersAppLog-All-global:6.15.3`
     2. **初始化 SDK**: 配置 `AppID` 與數據上報地址。
-    3. **自定義事件**: 使用 `onEventV3` 接口。
-  version: 1.0.2
+    3. **自定義事件**: 呼叫 `AppLog.onEventV3` 接口。
 
 tags:
   - name: SDK Configuration
@@ -18,11 +18,47 @@ tags:
   - name: Custom Events
     description: 自定義行為事件上報格式
 
-paths: {}
+# 這是關鍵：必須定義一個虛擬的路徑，Redoc 才會展開下面的 Schemas
+paths:
+  /sdk/config:
+    get:
+      tags:
+        - SDK Configuration
+      summary: 查看 SDK 配置模型
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SDKInitConfig'
+  /sdk/preset:
+    get:
+      tags:
+        - Preset Properties
+      summary: 查看預置屬性模型
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AndroidPresetProperties'
+  /sdk/events:
+    get:
+      tags:
+        - Custom Events
+      summary: 查看自定義事件格式
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomEventV3'
 
 components:
   schemas:
-    # --- 1. SDK 初始化配置 ---
     SDKInitConfig:
       type: object
       title: SDK 初始化參數 (InitConfig)
@@ -40,19 +76,17 @@ components:
           example: "GooglePlay"
         auto_track_enabled:
           type: boolean
-          description: "是否開啟全埋點 (自動採集點擊、頁面瀏覽)"
+          description: "是否開啟全埋點"
           default: true
         log_enable:
           type: boolean
-          description: "是否開啟調試日誌 (建議開發環境開啟，生產環境關閉)"
+          description: "是否開啟調試日誌"
           default: false
 
-    # --- 2. SDK 預置屬性 (自動採集) ---
     AndroidPresetProperties:
       type: object
       title: Android 預置屬性
-      description: |
-        SDK 會在每次事件上報時自動帶上這些設備相關屬性，不需手動開發。
+      description: "SDK 自動採集的設備相關屬性。"
       properties:
         device_model:
           type: string
@@ -66,23 +100,11 @@ components:
           type: string
           description: "App 的版本號"
           example: "1.0.5"
-        resolution:
-          type: string
-          description: "螢幕解析度"
-          example: "1440x3120"
-        language:
-          type: string
-          description: "系統語言"
-          example: "zh-Hant"
 
-    # --- 3. 自定義事件範例 (onEventV3) ---
     CustomEventV3:
       type: object
       title: 自定義事件上報格式
-      description: |
-        呼叫 `AppLog.onEventV3(eventName, params)` 時傳入的結構。
-      required:
-        - event_name
+      description: "呼叫 AppLog.onEventV3 時傳入的結構。"
       properties:
         event_name:
           type: string
@@ -90,16 +112,11 @@ components:
           example: "video_play_click"
         params:
           type: object
-          description: "事件伴隨的自定義參數"
+          description: "事件參數細節"
           properties:
             video_id:
               type: string
               example: "vid_9982"
             play_source:
               type: string
-              description: "播放來源 (首頁、推薦、收藏)"
               example: "recommend"
-            is_auto_play:
-              type: boolean
-              description: "是否為自動播放"
-              example: false
